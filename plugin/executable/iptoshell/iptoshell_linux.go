@@ -80,8 +80,9 @@ func (p *iptoshellPlugin) addIPtoshell(r *dns.Msg) error {
 			if !ok {
 				return fmt.Errorf("iptoshell invalid A record with ip: %s", rr.A)
 			}
-			prefix, err := addr.Prefix(p.args.Mask4)
-			if !err {
+			var okprefix error
+			prefix, okprefix := addr.Prefix(p.args.Mask4)
+			if !okprefix {
 				return fmt.Errorf("iptoshell to Prefix  invalid A record with ip: %s", rr.A)
 			}
 			cmd := exec.Command(p.args.SetName4, prefix.String(), strconv.Itoa(p.args.Mask4) )
@@ -100,8 +101,9 @@ func (p *iptoshellPlugin) addIPtoshell(r *dns.Msg) error {
 			if !ok {
 				return fmt.Errorf("invalid AAAA record with ip: %s", rr.AAAA)
 			}
-			prefix, err := addr.Prefix(p.args.Mask6)
-			if !err {
+			var okprefix error
+			prefix, okprefix := addr.Prefix(p.args.Mask6)
+			if !okprefix {
 				return fmt.Errorf("iptoshell to Prefix  invalid AAAA record with ip: %s", rr.AAAA)
 			}
 			cmd := exec.Command(p.args.SetName6, prefix.String(), strconv.Itoa(p.args.Mask6) )
